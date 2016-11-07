@@ -142,7 +142,7 @@ resource "aws_route_table_association" "private_subnet_us_west_2c_association" {
     route_table_id = "${aws_route_table.private_route_table.id}"
 }
 
-resource "aws_security_group" "allow_ssh" {
+resource "aws_security_group" "allow_local_ssh" {
   name = "allow_ssh"
   description = "Allow local inbound ssh traffic"
 
@@ -150,7 +150,7 @@ resource "aws_security_group" "allow_ssh" {
       from_port = 22
       to_port = 22
       protocol = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = ["76.94.88.122/32"]
   }
 
 }
@@ -158,7 +158,7 @@ resource "aws_security_group" "allow_ssh" {
 resource "aws_instance" "web" {
     ami = "ami-5ec1673e"
     instance_type = "t2.micro"
-    vpc_security_group_ids = ["${aws_security_group.allow_ssh.id}"]
+    vpc_security_group_ids = ["${aws_security_group.allow_local_ssh.id}"]
     subnet_id = "${aws_subnet.public_subnet_us_west_2a.id}"
     associate_public_ip_address = true
     key_name = "cit360"
