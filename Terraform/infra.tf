@@ -43,7 +43,7 @@ resource "aws_subnet" "private_subnet_us_west_2a" {
   cidr_block              = "172.31.0.0/22"
   availability_zone = "us-west-2a"
   tags = {
-  	Name =  "Private Subnet 1a"
+  	Name =  "Private Subnet 2a"
   }
 }
 
@@ -83,7 +83,7 @@ resource "aws_route_table" "public_route_table" {
 	}
 
 	tags = {
-		Name = "public route table"
+		Name = "Public route table"
 	}
 }
 
