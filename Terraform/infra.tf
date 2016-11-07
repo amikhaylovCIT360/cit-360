@@ -144,7 +144,7 @@ resource "aws_route_table_association" "private_subnet_us_west_2c_association" {
 
 resource "aws_security_group" "allow_ssh" {
   name = "allow_ssh"
-  description = "Allow all inbound ssh traffic"
+  description = "Allow local inbound ssh traffic"
 
   ingress {
       from_port = 22
