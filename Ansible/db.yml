@@ -1,41 +1,23 @@
 ---
 - hosts: db
-  vars:
-    db_password: password
   tasks:
+    - name: Include Secret
+      include_vars: secret.yml
 
-    - name: Configure selinux
-      become: yes
-      lineinfile: dest=/etc/sysconfig/selinux regexp="^SELINUX=" line="SELINUX=permissive"
-
-    - name: Configure setenforce
-      become: yes
-      command: setenforce 0
-    
     - name: Copy DB
       become: yes
-      copy: src=db/MariaDB.repo dest=/etc/yum.repos.d/MariaDB.repo mode=0644
-    
-    - name: Yum MariaDB
+      copy: src=~/cit-360/Ansible/db/MariaDB.repo dest=/etc/yum.repos.d/MariaDB.repo mode=0644
+           
+
+    - name: Install MariaDB client
       become: yes
-      yum: name="MariaDB-server,MariaDB-client" update_cache=yes state=present
-
-    - name: Start MariaDB
+      package: name=MariaDB-client update_cache=yes state=present
+     
+    - name: unpack db.tgz
       become: yes
-      service: name=mariadb state=started enabled=yes
-
-    - name: Configure MariaBD mariadb_answers
-      template: src=db/mariadb_answers.txt dest=/tmp/mariadb_answers.txt mode=0644
-
-    - name: Configure mysql_secure_installation
-      become: yes
-      shell: /usr/bin/mysql_secure_installation </tmp/mariadb_answers.txt
-
-    - name: Configure db.tgz
-      become: yes
-      unarchive: src=db/db.tgz dest=~/ mode=0644
-
+      unarchive: src=db/db.tgz dest=~/ mode=0777
+       
     - name: Make database
-      command: ./make_databases.sh {{ db_password }} localhost chdir=~/db
+      become: yes
+      command: ./make_databases.sh "{{ db_password }}" tf-20161121040204320572553fa6.cart0lljjdyl.us-west-2.rds.amazonaws.com chdir=~/db
       ignore_errors: True
-
