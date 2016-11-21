@@ -5,7 +5,7 @@
     service_name: curriculum
     service_version: 1.0
     app_env: test
-    db_host: tf-20161120014721078181563n5c.cart0lljjdyl.us-west-2.rds.amazonaws.com
+    db_host: tf-20161121060218854136814yvn.cart0lljjdyl.us-west-2.rds.amazonaws.com
     db_database: curriculum
     db_username: curriculum
     db_port: 3306
@@ -29,10 +29,7 @@
     
     - name: Composer
       become: yes
-      get_url:
-        url: https://getcomposer.org/installer
-        dest: /usr/local/bin/composer
-        mode: 0777
+      shell: php /usr/local/bin/composer --install-dir=/usr/local/bin --filename=composer
 
     - name:  nginx2
       become: yes
@@ -75,7 +72,7 @@
     - name: Composer
       become: yes
       command: /usr/local/bin/composer update chdir={{ service_dir }}
-      ignore_errors: True
+      ignore_errors: True     
 
     - name: permissions
       become: yes
@@ -88,3 +85,4 @@
     - name: Template
       become: yes
       template: src=~/cit-360/Ansible/web/env.j2 dest="{{ service_dir }}/.env" mode=0644 owner=nginx
+      
