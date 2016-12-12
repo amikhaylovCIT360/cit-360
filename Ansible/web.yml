@@ -5,7 +5,7 @@
     service_name: curriculum
     service_version: 1.0
     app_env: test
-    db_host: tf-20161121060218854136814yvn.cart0lljjdyl.us-west-2.rds.amazonaws.com
+    db_host: tf-20161212052510573538085g6f.cart0lljjdyl.us-west-2.rds.amazonaws.com
     db_database: curriculum
     db_username: curriculum
     db_port: 3306
@@ -27,6 +27,13 @@
       yum: name=nginx update_cache=yes state=present
       register: nginx_install
     
+    - name: Download installer
+      become: yes
+      get_url: 
+        url: https://getcomposer.org/installer
+        dest: /usr/local/bin/composer
+        mode: 0777
+        
     - name: Composer
       become: yes
       shell: php /usr/local/bin/composer --install-dir=/usr/local/bin --filename=composer
