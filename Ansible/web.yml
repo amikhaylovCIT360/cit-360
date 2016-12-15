@@ -14,7 +14,7 @@
     - name: Include Secret
       include_vars: secret.yml
 
-    - name: Yum epel-release
+    - name: Install epel-release
       become: yes
       yum: name=epel-release update_cache=yes state=present
 
@@ -22,23 +22,23 @@
       become: yes
       shell: yes | yum install php54 php54-fpm php54-ldap php54-mbstring php54-mcrypt php54-pdo
 
-    - name: nginx
+    - name: Install nginx
       become: yes
       yum: name=nginx update_cache=yes state=present
       register: nginx_install
     
-    - name: Download installer
+    - name: Download Composer Installer
       become: yes
       get_url: 
         url: https://getcomposer.org/installer
         dest: /usr/local/bin/composer
         mode: 0777
         
-    - name: Composer
+    - name: Install Composer
       become: yes
       shell: php /usr/local/bin/composer --install-dir=/usr/local/bin --filename=composer
 
-    - name:  nginx2
+    - name:  Copy nginx.conf from bastion instance to DB
       become: yes
       copy: src=~/cit-360/Ansible/web/nginx.conf dest=/etc/nginx/nginx.conf mode=0000
       register: nginx_conf
